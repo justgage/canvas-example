@@ -1,0 +1,62 @@
+<html>
+   <head></head>
+   <body>
+      <canvas id="canvas"></canvas>
+      <script>
+
+         var box = {
+            x : 0,
+            y : 0,
+            hspeed : 5,
+            vspeed : 0,
+            gravity : 1,
+            width : 20,
+            height : 20,
+            context : null,
+            color : "#0ff",
+            step : function () { 
+               this.x += this.hspeed;
+               this.y += this.vspeed;
+               this.vspeed += this.gravity;
+
+               if (this.y > 100) {
+                  this.vspeed = -this.vspeed * 0.6;
+                  this.hspeed = this.hspeed * 0.5;
+               }
+            },
+            draw : function () {
+               this.context.fillStyle = this.color;
+               this.context.fillRect(this.x,this.y,this.width,this.height);
+            }
+         };
+
+         var canvas = document.getElementById('canvas');
+         box.context = canvas.getContext("2d");
+         box.draw();
+
+         var game = {
+            context : canvas.getContext("2d"),
+            objects : [
+               box
+            ],
+            draw : function () { 
+               this.context.fillStyle = "eee";
+               this.context.fillRect(0,0,900,900);
+
+               var ob;
+               for(i = 0, l = this.objects.length; i < l; i++) {
+                  ob = this.objects[i];
+                  ob.step();
+                  ob.draw();
+               }
+            }
+         }
+
+         window.setInterval(function () {
+               game.draw();
+            },30);
+         
+
+      </script>
+   </body>
+</html>
